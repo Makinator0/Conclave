@@ -8,6 +8,8 @@ import org.example.conclave.services.AuthService;
 import org.example.conclave.services.RegistrationService;
 import org.example.conclave.services.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +20,8 @@ public class UserController {
     private final UserService userService;
     private final AuthService authService;
     private final RegistrationService registrationService;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     public UserController(UserService userService, AuthService authService, RegistrationService registrationService) {
         this.userService = userService;
         this.authService = authService;
@@ -30,6 +33,10 @@ public class UserController {
             User user = (User) userService.loadUserByUsername(loginRequest.getUsername());
             System.out.println(user.getPassword().toString());
             System.out.println(user.getUsername().toString());
+            // Проверка пароля
+            if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Неверный логин или пароль");
+            }
             String token = authService.generateAndSetToken(user);
             return ResponseEntity.ok().header("Authorization", "Bearer " + token).body("Успешный вход");
         } catch (Exception e) {
