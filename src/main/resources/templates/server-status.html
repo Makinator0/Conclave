@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Server Status</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .status {
+            color: #4caf50;
+            font-size: 24px;
+            margin-top: 20px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+<h1>🚀 Server Status</h1>
+<p class="status">✅ Server is up and ready for requests.</p>
+<div class="footer">Environment: <strong>Production</strong> | Last checked: <span id="timestamp"></span></div>
+
+<script>
+    const now = new Date();
+    document.getElementById('timestamp').textContent = now.toLocaleString();
+</script>
+</body>
+</html>
